@@ -1,2 +1,2 @@
 # Profile
-Dedicado a las funcionalidades del propio perfil de un usuario
+Dedicado a las funcionalidades del perfil de los usuarios
