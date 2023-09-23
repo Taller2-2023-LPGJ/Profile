@@ -15,22 +15,58 @@ async function create(username){
             },
         });
     } catch(err){
-        throw new Exception('An unexpected error has occurred when trying to create your profile. Please try again later.', 500);
+        switch(err.code){
+            case 'P2002': // Unique constraint violation
+                throw new Exception('Username already taken.', 403);
+            default:
+                throw new Exception('An unexpected error has occurred when trying to create your profile. Please try again later.', 500);
+        }
     } finally{
         await prisma.$disconnect();
     }
 }
 
-async function read(username){
+async function findExact(username){
     const prisma = new PrismaClient();
     
     try {
-        var userProfile = await prisma.profiles.findFirst({
+        return await prisma.profiles.findFirst({
             where: {username: username}
         });
-
-        return userProfile;
     } catch(err){
+        throw new Exception('An unexpected error has occurred. Please try again later.', 500);
+    } finally{
+        await prisma.$disconnect();
+    }
+}
+
+async function findAlike(username, alike, limit, ord){
+    const prisma = new PrismaClient();
+    
+    try {
+        return await prisma.profiles.findMany({
+            select: {
+                username: true,
+                displayName: true,
+            },
+            where: {
+                username: {
+                    not: {
+                        equals: username
+                    },
+                    contains: alike,
+                },
+            },
+            /*orderBy: {
+                username: {
+                    _count: 'desc',
+                    //_rand: 'asc',
+                },
+            },*/
+            take: limit,
+        });
+    } catch(err){
+        console.log(err);
         throw new Exception('An unexpected error has occurred. Please try again later.', 500);
     } finally{
         await prisma.$disconnect();
@@ -57,6 +93,7 @@ async function update(username, updatedData){
 
 module.exports = {
     create,
-    read,
+    findExact,
+    findAlike,
     update,
 };
