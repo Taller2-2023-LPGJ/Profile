@@ -4,9 +4,8 @@ services:
   t2-profile:
     container_name: t2-profile
     build: . 
-    env_file: ./.env
     ports:
-      - ${APP_PORT}:${APP_PORT}
+      - 3001:3001
     volumes:
       - './:/usr/src/app'
     networks:
@@ -15,14 +14,13 @@ services:
   # Servicio para PostgreSQL
   t2-profile-db:
     image: postgres:latest
-    env_file: ./.env
     container_name: profile-db
     environment:
       POSTGRES_DB: profile
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
     ports:
-      - ${DB_PORT}:${DB_PORT}
+      - 5433:5433
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
@@ -31,13 +29,12 @@ services:
   # Servicio para PgAdmin
   t2-profile-pgadmin:
     image: dpage/pgadmin4:latest
-    env_file: ./.env
     container_name: t2-profile-pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@gmail.com
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
-      - ${PGADMIN_PORT}:80
+      - 5052:80
     depends_on:
       - t2-profile-db
     volumes:
@@ -55,7 +52,7 @@ services:
       - t2-profile-db
       - t2-profile
     ports:
-      - "${PRISMA_PORT}:${PRISMA_PORT}"
+      - "5053:5053"
     entrypoint: ["bash", "-c", "sleep 10 && npx prisma migrate dev --name init"]
     restart: "no"
     networks:
