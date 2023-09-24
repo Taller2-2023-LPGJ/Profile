@@ -23,9 +23,9 @@ async function findExact(username){
 	}
 }
 
-async function findAlike(username, alike, limit, order){
+async function findAlike(username, limit, order){
 	try{
-		return await profileDB.findAlike(username, alike ?? '', limit ?? 8, order ?? 'ASC');
+		return await profileDB.findAlike(username ?? '', limit ?? 8, order ?? 'ASC');
 	} catch(err){
 		throw err;
 	}

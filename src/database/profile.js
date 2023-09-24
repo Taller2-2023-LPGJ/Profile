@@ -40,7 +40,7 @@ async function findExact(username){
     }
 }
 
-async function findAlike(username, alike, limit, ord){
+async function findAlike(username, limit, ord){
     const prisma = new PrismaClient();
     
     try {
@@ -51,10 +51,7 @@ async function findAlike(username, alike, limit, ord){
             },
             where: {
                 username: {
-                    not: {
-                        equals: username
-                    },
-                    contains: alike,
+                    contains: username,
                 },
             },
             /*orderBy: {
@@ -89,7 +86,6 @@ async function update(username, updatedData){
         await prisma.$disconnect();
     }
 }
-
 
 module.exports = {
     create,
