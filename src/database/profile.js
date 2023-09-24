@@ -63,7 +63,6 @@ async function findAlike(username, limit, ord){
             take: limit,
         });
     } catch(err){
-        console.log(err);
         throw new Exception('An unexpected error has occurred. Please try again later.', 500);
     } finally{
         await prisma.$disconnect();

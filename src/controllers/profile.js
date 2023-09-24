@@ -27,8 +27,6 @@ const findExact = async (req, res) => {
 const findAlike = async (req, res) => {
     const { username, limit, ord }  = req.query;
 
-    console.log(req.body);
-
     try{
 		const profiles = await profile.findAlike(username, limit, ord);
 
