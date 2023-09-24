@@ -1,4 +1,4 @@
-const profileDB = require('../database/profileDB');
+const profileDB = require('../database/profile');
 const Exception = require('./exception');
 
 async function create(username){
@@ -9,15 +9,23 @@ async function create(username){
 	}
 }
 
-async function read(username){
+async function findExact(username){
 	try{
-		const profile = await profileDB.read(username);
+		const profile = await profileDB.findExact(username);
 
 		if(!profile){
-			throw new Exception('Account not found', 404);
+			throw new Exception('Account not found.', 404);
 		}
 
 		return profile;
+	} catch(err){
+		throw err;
+	}
+}
+
+async function findAlike(username, limit, order){
+	try{
+		return await profileDB.findAlike(username ?? '', limit ?? 8, order ?? 'ASC');
 	} catch(err){
 		throw err;
 	}
@@ -48,6 +56,7 @@ async function update(username, updatedData){
 
 module.exports = {
 	create,
-	read,
+	findExact,
+	findAlike,
 	update,
 };
