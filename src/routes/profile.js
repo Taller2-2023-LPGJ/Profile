@@ -3,12 +3,14 @@ const router = Router();
 
 const {
     create,
-    read,
+    findExact,
+    findAlike,
     update,
-} = require('../controllers/profileCtrl');
+} = require('../controllers/profile');
 
 router.post('/', create);
-router.get('/', read);
+router.get('/:username', findExact);
+router.get('/', findAlike);
 router.put('/', update);
 
 module.exports = router;

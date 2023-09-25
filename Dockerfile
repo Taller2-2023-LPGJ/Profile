@@ -11,7 +11,7 @@ COPY package*.json ./
 COPY prisma ./prisma/
 
 # COPY ENV variable
-COPY .env ./
+COPY env.example ./.env
 
 # Install project dependencies
 RUN npm install
@@ -24,7 +24,7 @@ RUN command
 COPY . .
 
 # Expose the port your app runs on
-EXPOSE 3000
+EXPOSE 3001
 
 # Command to run your app when the container starts
 CMD ["node", "server.js"]

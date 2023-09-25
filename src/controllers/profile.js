@@ -1,10 +1,10 @@
-const profileSrv = require('../services/profileSrv');
+const profile = require('../services/profile');
 
 const create = async (req, res) => {
     const { username } = req.body;
 
     try{
-		await profileSrv.create(username);
+		await profile.create(username);
 
         res.status(200).json({message: "Profile has been successfully created."});
 	} catch(err){
@@ -12,13 +12,25 @@ const create = async (req, res) => {
     }
 }
 
-const read = async (req, res) => {
-    const { username } = req.body;
+const findExact = async (req, res) => {
+    const { username }  = req.params;
 
     try{
-		const profile = await profileSrv.read(username);
+		const userProfile = await profile.findExact(username ?? '');
 
-        res.status(200).json(profile);
+        res.status(200).json(userProfile);
+	} catch(err){
+        res.status(err.statusCode).json({ message: err.message });
+    }
+}
+
+const findAlike = async (req, res) => {
+    const { username, limit, ord }  = req.query;
+
+    try{
+		const profiles = await profile.findAlike(username, limit, ord);
+
+        res.status(200).json(profiles);
 	} catch(err){
         res.status(err.statusCode).json({ message: err.message });
     }
@@ -28,7 +40,7 @@ const update = async (req, res) => {
     const { username, displayName, location, biography, dateOfBirth } = req.body;
 
     try{
-		await profileSrv.update(username, {displayName, location, biography, dateOfBirth});
+		await profile.update(username, {displayName, location, biography, dateOfBirth});
 
         res.status(200).json({message: "Profile has been successfully updated."});
 	} catch(err){
@@ -38,6 +50,7 @@ const update = async (req, res) => {
 
 module.exports = {
     create,
-    read,
+    findExact,
+    findAlike,
     update
 }

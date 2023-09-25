@@ -15,21 +15,54 @@ async function create(username){
             },
         });
     } catch(err){
-        throw new Exception('An unexpected error has occurred when trying to create your profile. Please try again later.', 500);
+        console.log(err);
+        switch(err.code){
+            case 'P2002': // Unique constraint violation
+                throw new Exception('Username already taken.', 403);
+            default:
+                throw new Exception('An unexpected error has occurred when trying to create your profile. Please try again later.', 500);
+        }
     } finally{
         await prisma.$disconnect();
     }
 }
 
-async function read(username){
+async function findExact(username){
     const prisma = new PrismaClient();
     
     try {
-        var userProfile = await prisma.profiles.findFirst({
+        return await prisma.profiles.findFirst({
             where: {username: username}
         });
+    } catch(err){
+        throw new Exception('An unexpected error has occurred. Please try again later.', 500);
+    } finally{
+        await prisma.$disconnect();
+    }
+}
 
-        return userProfile;
+async function findAlike(username, limit, ord){
+    const prisma = new PrismaClient();
+    
+    try {
+        return await prisma.profiles.findMany({
+            select: {
+                username: true,
+                displayName: true,
+            },
+            where: {
+                username: {
+                    contains: username,
+                },
+            },
+            /*orderBy: {
+                username: {
+                    _count: 'desc',
+                    //_rand: 'asc',
+                },
+            },*/
+            take: limit,
+        });
     } catch(err){
         throw new Exception('An unexpected error has occurred. Please try again later.', 500);
     } finally{
@@ -54,9 +87,9 @@ async function update(username, updatedData){
     }
 }
 
-
 module.exports = {
     create,
-    read,
+    findExact,
+    findAlike,
     update,
 };
