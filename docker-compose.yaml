@@ -6,8 +6,10 @@ services:
     build: . 
     ports:
       - 3001:3001
-    volumes:
-      - './:/usr/src/app'
+    links:
+      - t2-profile-db
+    depends_on:
+      - t2-profile-db
     networks:
       - taller2
 

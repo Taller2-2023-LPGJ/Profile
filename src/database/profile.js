@@ -15,6 +15,7 @@ async function create(username){
             },
         });
     } catch(err){
+        console.log(err);
         switch(err.code){
             case 'P2002': // Unique constraint violation
                 throw new Exception('Username already taken.', 403);

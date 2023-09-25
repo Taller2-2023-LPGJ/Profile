@@ -4,11 +4,12 @@ const bodyParser = require('body-parser');
 const profileRoute = require('./src/routes/profile');
 
 const app = express();
+const port = 3001;
 
 app.use(bodyParser.json());
 
 app.use('/', profileRoute);
 
-app.listen(process.env.APP_PORT, () => {
-    console.log(`Server is running on port ${process.env.APP_PORT}`);
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
