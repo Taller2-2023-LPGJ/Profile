@@ -1,4 +1,5 @@
 const profile = require('../services/profile');
+const axios = require('axios');
 
 const create = async (req, res) => {
     const { username } = req.body;
@@ -17,10 +18,14 @@ const findExact = async (req, res) => {
 
     try{
 		const userProfile = await profile.findExact(username ?? '');
+        const followerInfo = await axios.get(process.env.INTERACTION_URL + username);
 
-        res.status(200).json(userProfile);
+        res.status(followerInfo.status).json({...userProfile, ...followerInfo.data});
 	} catch(err){
-        res.status(err.statusCode).json({ message: err.message });
+        if(axios.isAxiosError(err))
+            res.status(err.response.status).json(err.response.data);
+        else
+            res.status(err.statusCode).json({ message: err.message });
     }
 }
 
