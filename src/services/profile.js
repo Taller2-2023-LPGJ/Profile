@@ -54,26 +54,9 @@ async function update(username, updatedData){
 	}
 }
 
-async function fetchDisplayNames(authors){
-	try{
-		const users = await profileDB.fetchDisplayNames(authors);
-
-		const usernameToDisplayName = {};
-
-		users.forEach((user) => {
-			usernameToDisplayName[user.username] = user.displayName;
-		});
-
-		return usernameToDisplayName;
-	} catch(err){
-		throw err;
-	}
-}
-
 module.exports = {
 	create,
 	findExact,
 	findAlike,
 	update,
-	fetchDisplayNames
 };

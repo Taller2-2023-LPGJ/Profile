@@ -18,10 +18,9 @@ const findExact = async (req, res) => {
 
     try{
 		const userProfile = await profile.findExact(username ?? '');
-        const followerInfo = await axios.get(process.env.CONTENT_URL + 'follow/' + username);
-        const posts = await axios.get(process.env.CONTENT_URL + 'post/', {params: {...req.query, author: username}});
+        const followerInfo = await axios.get(process.env.INTERACTION_URL + username);
 
-        res.status(followerInfo.status).json({...userProfile, ...followerInfo.data, posts: posts.data});
+        res.status(followerInfo.status).json({...userProfile, ...followerInfo.data});
 	} catch(err){
         if(axios.isAxiosError(err))
             res.status(err.response.status).json(err.response.data);
@@ -54,22 +53,9 @@ const update = async (req, res) => {
     }
 }
 
-const fetchDisplayNames = async (req, res) => {
-    const { authors }  = req.body;
-
-    try{
-		const displayNames = await profile.fetchDisplayNames(authors);
-
-        res.status(200).json(displayNames);
-	} catch(err){
-        res.status(err.statusCode).json({ message: err.message });
-    }
-}
-
 module.exports = {
     create,
     findExact,
     findAlike,
-    update,
-    fetchDisplayNames
+    update
 }
