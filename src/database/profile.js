@@ -86,9 +86,32 @@ async function update(username, updatedData){
     }
 }
 
+async function fetchDisplayNames(username, updatedData){
+    const prisma = new PrismaClient();
+    
+    try {
+        return await prisma.profiles.findMany({
+            where: {
+                username: {
+                    in: username
+                }
+            },
+            select: {
+                username: true,
+                displayName: true,
+            }
+        });
+    } catch(err){
+        throw new Exception('An unexpected error has occurred. Please try again later.', 500);
+    } finally{
+        await prisma.$disconnect();
+    }
+}
+
 module.exports = {
     create,
     findExact,
     findAlike,
     update,
+    fetchDisplayNames
 };
