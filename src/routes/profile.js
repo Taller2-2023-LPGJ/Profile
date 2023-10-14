@@ -6,11 +6,13 @@ const {
     findExact,
     findAlike,
     update,
+    fetchDisplayNames
 } = require('../controllers/profile');
 
 router.post('/', create);
 router.get('/:username', findExact);
 router.get('/', findAlike);
 router.put('/', update);
+router.post('/displayNames', fetchDisplayNames);
 
 module.exports = router;
