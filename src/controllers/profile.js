@@ -14,10 +14,10 @@ const create = async (req, res) => {
 }
 
 const findExact = async (req, res) => {
-    const { username }  = req.params;
+    const { user }  = req.params;
 
     try{
-		const userProfile = await profile.findExact(username ?? '');
+		const userProfile = await profile.findExact(user ?? '');
         const followerInfo = await axios.get(process.env.CONTENT_URL + 'follow/' + username);
         const posts = await axios.get(process.env.CONTENT_URL + 'post/', {params: {...req.query, author: username}});
 
@@ -31,10 +31,10 @@ const findExact = async (req, res) => {
 }
 
 const findAlike = async (req, res) => {
-    const { username, limit, ord }  = req.query;
+    const { user, limit, ord }  = req.query;
 
     try{
-		const profiles = await profile.findAlike(username, limit, ord);
+		const profiles = await profile.findAlike(user, limit, ord);
 
         res.status(200).json(profiles);
 	} catch(err){
