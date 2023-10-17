@@ -11,7 +11,8 @@ COPY package*.json ./
 COPY prisma ./prisma/
 
 # COPY ENV variable
-COPY env.example ./.env
+#COPY env.example ./.env
+COPY .env ./
 
 # Install project dependencies
 RUN npm install
