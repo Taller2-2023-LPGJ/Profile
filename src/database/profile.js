@@ -12,6 +12,7 @@ async function create(username){
                 location: null,
                 biography: 'Welcome to my profile!',
                 dateOfBirth: null,
+                profilePicture: 'https://firebasestorage.googleapis.com/v0/b/snapmsg-399802.appspot.com/o/default_avatar.png?alt=media&token=2f003c2c-19ca-491c-b6b1-a08154231245'
             },
         });
     } catch(err){
@@ -78,6 +79,7 @@ async function update(username, updatedData){
             data: updatedData,
         });
     } catch(err){
+        console.log(err);
         if(err.code == 'P2025')
             throw new Exception('Account not found', 404);
         throw new Exception('An unexpected error has occurred. Please try again later.', 500);

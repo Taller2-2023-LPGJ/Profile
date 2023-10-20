@@ -13,4 +13,5 @@ model profiles{
     location        String?     @db.VarChar(50)
     biography       String?     @db.VarChar(160)
     dateOfBirth     DateTime?
+    profilePicture  String?     @db.VarChar(2083)
 }

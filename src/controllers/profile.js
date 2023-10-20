@@ -45,10 +45,10 @@ const findAlike = async (req, res) => {
 }
 
 const update = async (req, res) => {
-    const { username, displayName, location, biography, dateOfBirth } = req.body;
+    const { username, displayName, location, biography, dateOfBirth, profilePicture } = req.body;
 
     try{
-		await profile.update(username, {displayName, location, biography, dateOfBirth});
+		await profile.update(username, {displayName, location, biography, dateOfBirth, profilePicture});
 
         res.status(200).json({message: "Profile has been successfully updated."});
 	} catch(err){
