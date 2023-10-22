@@ -110,10 +110,27 @@ async function fetchDisplayNames(username, updatedData){
     }
 }
 
+async function getProfile(username){
+    const prisma = new PrismaClient();
+
+	try {
+        var profile = await prisma.profiles.findFirst({
+            where: { username: username }
+        });
+
+        return profile;
+    } catch(err){
+        throw new Exception('An unexpected error has occurred. Please try again later.', 500);
+    } finally{
+        await prisma.$disconnect();
+    }
+}
+
 module.exports = {
     create,
     findExact,
     findAlike,
     update,
-    fetchDisplayNames
+    fetchDisplayNames,
+    getProfile
 };
