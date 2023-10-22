@@ -70,10 +70,21 @@ async function fetchDisplayNames(authors){
 	}
 }
 
+async function verifyProfile(username){
+	try{
+		var profile = await profileDB.getProfile(username);
+		profile.verified = true;
+		await profileDB.update(username, profile);
+	} catch(err){
+		throw err;
+	}
+}
+
 module.exports = {
 	create,
 	findExact,
 	findAlike,
 	update,
-	fetchDisplayNames
+	fetchDisplayNames,
+	verifyProfile
 };

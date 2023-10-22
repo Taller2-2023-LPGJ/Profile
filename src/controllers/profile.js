@@ -68,10 +68,23 @@ const fetchDisplayNames = async (req, res) => {
     }
 }
 
+const verifyProfile = async (req, res) => {
+    const { username }  = req.params;
+
+    try{
+		await profile.verifyProfile(username);
+
+        res.status(200).json('verified profile');
+	} catch(err){
+        res.status(err.statusCode).json({ message: err.message });
+    }
+}
+
 module.exports = {
     create,
     findExact,
     findAlike,
     update,
-    fetchDisplayNames
+    fetchDisplayNames,
+    verifyProfile
 }

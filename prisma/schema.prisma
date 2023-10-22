@@ -14,4 +14,5 @@ model profiles{
     biography       String?     @db.VarChar(160)
     dateOfBirth     DateTime?
     profilePicture  String?     @db.VarChar(2083)
+    verified        Boolean     @default(false)
 }
