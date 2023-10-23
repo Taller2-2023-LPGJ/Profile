@@ -49,6 +49,8 @@ async function findAlike(username, limit, ord){
             select: {
                 username: true,
                 displayName: true,
+                verified: true,
+                profilePicture: true
             },
             where: {
                 username: {
