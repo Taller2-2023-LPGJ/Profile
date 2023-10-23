@@ -23,7 +23,6 @@ const findExact = async (req, res) => {
 
         res.status(followerInfo.status).json({...userProfile, ...followerInfo.data});
 	} catch(err){
-	    console.log(err);
         if(axios.isAxiosError(err))
             res.status(err.response.status).json(err.response.data);
         else

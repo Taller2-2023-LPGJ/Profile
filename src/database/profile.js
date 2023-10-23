@@ -79,7 +79,6 @@ async function update(username, updatedData){
             data: updatedData,
         });
     } catch(err){
-        console.log(err);
         if(err.code == 'P2025')
             throw new Exception('Account not found', 404);
         throw new Exception('An unexpected error has occurred. Please try again later.', 500);
