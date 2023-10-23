@@ -88,7 +88,7 @@ async function update(username, updatedData){
     }
 }
 
-async function fetchDisplayNames(username, updatedData){
+async function fetchProfileData(username){
     const prisma = new PrismaClient();
     
     try {
@@ -101,6 +101,8 @@ async function fetchDisplayNames(username, updatedData){
             select: {
                 username: true,
                 displayName: true,
+                verified: true,
+                profilePicture: true
             }
         });
     } catch(err){
@@ -131,6 +133,6 @@ module.exports = {
     findExact,
     findAlike,
     update,
-    fetchDisplayNames,
+    fetchProfileData,
     getProfile
 };

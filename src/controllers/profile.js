@@ -56,11 +56,11 @@ const update = async (req, res) => {
     }
 }
 
-const fetchDisplayNames = async (req, res) => {
+const fetchProfileData = async (req, res) => {
     const { authors }  = req.body;
 
     try{
-		const displayNames = await profile.fetchDisplayNames(authors);
+		const displayNames = await profile.fetchProfileData(authors);
 
         res.status(200).json(displayNames);
 	} catch(err){
@@ -85,6 +85,6 @@ module.exports = {
     findExact,
     findAlike,
     update,
-    fetchDisplayNames,
+    fetchProfileData,
     verifyProfile
 }

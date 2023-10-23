@@ -54,17 +54,23 @@ async function update(username, updatedData){
 	}
 }
 
-async function fetchDisplayNames(authors){
+async function fetchProfileData(authors){
 	try{
-		const users = await profileDB.fetchDisplayNames(authors);
+		const users = await profileDB.fetchProfileData(authors);
 
-		const usernameToDisplayName = {};
+		const usernameToDisplayData = {};
 
 		users.forEach((user) => {
-			usernameToDisplayName[user.username] = user.displayName;
+			let userData = {};
+
+			userData.displayName = user.displayName;
+			userData.picture = user.profilePicture;
+			userData.verified = user.verified;
+
+			usernameToDisplayData[user.username] = userData;
 		});
 
-		return usernameToDisplayName;
+		return usernameToDisplayData;
 	} catch(err){
 		throw err;
 	}
@@ -85,6 +91,6 @@ module.exports = {
 	findExact,
 	findAlike,
 	update,
-	fetchDisplayNames,
+	fetchProfileData,
 	verifyProfile
 };
