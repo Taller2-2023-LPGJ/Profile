@@ -41,7 +41,7 @@ async function findExact(username){
     }
 }
 
-async function findAlike(username, limit, ord){
+async function findAlike(username, page, size){
     const prisma = new PrismaClient();
     
     try {
@@ -57,13 +57,8 @@ async function findAlike(username, limit, ord){
                     contains: username,
                 },
             },
-            /*orderBy: {
-                username: {
-                    _count: 'desc',
-                    //_rand: 'asc',
-                },
-            },*/
-            take: limit,
+            skip: page * size,
+            take: size,
         });
     } catch(err){
         throw new Exception('An unexpected error has occurred. Please try again later.', 500);
