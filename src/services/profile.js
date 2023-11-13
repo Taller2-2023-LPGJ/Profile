@@ -23,9 +23,9 @@ async function findExact(username){
 	}
 }
 
-async function findAlike(username, limit, order){
+async function findAlike(username, page, size){
 	try{
-		return await profileDB.findAlike(username ?? '', limit ?? 8, order ?? 'ASC');
+		return await profileDB.findAlike(username ?? '', isNaN(+page) ? 0 : +page, isNaN(+size) ? 10 : +size);
 	} catch(err){
 		throw err;
 	}

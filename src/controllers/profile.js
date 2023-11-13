@@ -32,10 +32,10 @@ const findExact = async (req, res) => {
 }
 
 const findAlike = async (req, res) => {
-    const { user, limit, ord }  = req.query;
+    const { user, page, size }  = req.query;
 
     try{
-		const profiles = await profile.findAlike(user, limit, ord);
+		const profiles = await profile.findAlike(user, page, size);
 
         res.status(200).json(profiles);
 	} catch(err){
