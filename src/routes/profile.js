@@ -7,7 +7,7 @@ const {
     findAlike,
     update,
     fetchProfileData,
-    verifyProfile
+    verify
 } = require('../controllers/profile');
 
 router.post('/', create);
@@ -15,6 +15,6 @@ router.get('/:user', findExact);
 router.get('/', findAlike);
 router.put('/', update);
 router.post('/profileData', fetchProfileData);
-router.put('/verifyProfile/:username', verifyProfile);
+router.put('/verifyProfile/:username', verify);
 
 module.exports = router;

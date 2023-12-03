@@ -23,6 +23,7 @@ const findExact = async (req, res) => {
 
         res.status(followerInfo.status).json({...userProfile, ...followerInfo.data});
 	} catch(err){
+        console.log(err);
         if(axios.isAxiosError(err))
             res.status(err.response.status).json(err.response.data);
         else
@@ -66,13 +67,13 @@ const fetchProfileData = async (req, res) => {
     }
 }
 
-const verifyProfile = async (req, res) => {
+const verify = async (req, res) => {
     const { username }  = req.params;
 
     try{
-		await profile.verifyProfile(username);
+		await profile.verify(username);
 
-        res.status(200).json('verified profile');
+        res.status(200).json('Profile has been successfully verified.');
 	} catch(err){
         res.status(err.statusCode).json({ message: err.message });
     }
@@ -84,5 +85,5 @@ module.exports = {
     findAlike,
     update,
     fetchProfileData,
-    verifyProfile
+    verify
 }
