@@ -18,22 +18,26 @@ let res = {
     })
 }
 
-function PrismaError(message, code) {
-    this.message = message;
-    this.code = code;
+class PrismaError {
+    constructor(message, code) {
+        this.message = message;
+        this.code = code;
+    }
 }
 
-function AxiosError(message, code) {
-    this.response = {
-        data: message,
-        status: code
+class AxiosError {
+    constructor(message, code) {
+        this.response = {
+            data: message,
+            status: code
+        };
     }
 }
 
 PrismaError.prototype = new Error();
 AxiosError.prototype = new Error();
 
-describe('Create', () => {
+describe('Create', () => {   
     test('Successfully', async () => {
         prismaMock.profiles.create.mockResolvedValue();
     
