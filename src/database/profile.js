@@ -1,4 +1,4 @@
-const prisma = require('../client');
+const prisma = require('./client');
 const Exception = require('../services/exception');
 
 async function create(username){   
