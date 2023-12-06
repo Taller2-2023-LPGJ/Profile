@@ -1,9 +1,7 @@
-const { PrismaClient } = require('@prisma/client');
+const prisma = require('./client');
 const Exception = require('../services/exception');
 
-async function create(username){
-    const prisma = new PrismaClient();
-    
+async function create(username){   
     try{
         await prisma.profiles.create({
             data: {
@@ -12,78 +10,95 @@ async function create(username){
                 location: null,
                 biography: 'Welcome to my profile!',
                 dateOfBirth: null,
+                profilePicture: 'https://firebasestorage.googleapis.com/v0/b/snapmsg-399802.appspot.com/o/default_avatar.png?alt=media&token=2f003c2c-19ca-491c-b6b1-a08154231245'
             },
         });
     } catch(err){
-        console.log(err);
-        switch(err.code){
-            case 'P2002': // Unique constraint violation
-                throw new Exception('Username already taken.', 403);
-            default:
-                throw new Exception('An unexpected error has occurred when trying to create your profile. Please try again later.', 500);
-        }
-    } finally{
-        await prisma.$disconnect();
+        if(err.code == 'P2002')
+            throw new Exception('Username already taken.', 403);
+        throw new Exception('An unexpected error has occurred when trying to create your profile. Please try again later.', 500);
     }
 }
 
 async function findExact(username){
-    const prisma = new PrismaClient();
-    
     try {
         return await prisma.profiles.findFirst({
             where: {username: username}
         });
     } catch(err){
         throw new Exception('An unexpected error has occurred. Please try again later.', 500);
-    } finally{
-        await prisma.$disconnect();
     }
 }
 
-async function findAlike(username, limit, ord){
-    const prisma = new PrismaClient();
-    
+async function findAlike(username, page, size){
     try {
         return await prisma.profiles.findMany({
             select: {
                 username: true,
                 displayName: true,
+                verified: true,
+                profilePicture: true
             },
             where: {
                 username: {
                     contains: username,
                 },
             },
-            /*orderBy: {
-                username: {
-                    _count: 'desc',
-                    //_rand: 'asc',
-                },
-            },*/
-            take: limit,
+            skip: page * size,
+            take: size,
         });
     } catch(err){
         throw new Exception('An unexpected error has occurred. Please try again later.', 500);
-    } finally{
-        await prisma.$disconnect();
     }
 }
 
 async function update(username, updatedData){
-    const prisma = new PrismaClient();
-    
     try {
         return updatedProfile = await prisma.profiles.update({
             where: {username: username},
             data: updatedData,
         });
     } catch(err){
-        if(err.code == 'P2025')
-            throw new Exception('Account not found', 404);
+        if(err.code == 'P2002')
+            throw new Exception('Username already taken.', 403);
+        else if(err.code == 'P2025')
+            throw new Exception('Account not found.', 404);
         throw new Exception('An unexpected error has occurred. Please try again later.', 500);
-    } finally{
-        await prisma.$disconnect();
+    }
+}
+
+async function fetchProfileData(username){
+    try {
+        return await prisma.profiles.findMany({
+            where: {
+                username: {
+                    in: username
+                }
+            },
+            select: {
+                username: true,
+                displayName: true,
+                verified: true,
+                profilePicture: true
+            }
+        });
+    } catch(err){
+        throw new Exception('An unexpected error has occurred. Please try again later.', 500);
+    }
+}
+
+async function verify(username){
+	try {
+        await prisma.profiles.update({
+            where: { username: username },
+            data: {
+                verified: true
+            }
+        });
+    } catch(err){
+        if(err.code == 'P2025')
+            throw new Exception('Account not found.', 404);
+        throw new Exception('An unexpected error has occurred. Please try again later.', 500);
     }
 }
 
@@ -92,4 +107,6 @@ module.exports = {
     findExact,
     findAlike,
     update,
+    fetchProfileData,
+    verify
 };

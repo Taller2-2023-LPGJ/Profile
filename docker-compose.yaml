@@ -55,7 +55,7 @@ services:
       - t2-profile
     ports:
       - "5053:5053"
-    entrypoint: ["bash", "-c", "sleep 10 && npx prisma migrate dev --name init"]
+    entrypoint: ["bash", "-c", "npx prisma migrate dev --name init"]
     restart: "no"
     networks:
       - taller2
