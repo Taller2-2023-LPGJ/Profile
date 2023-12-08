@@ -7,7 +7,7 @@ const create = async (req, res) => {
     try{
 		await profile.create(username);
 
-        res.status(200).json({message: "Profile has been successfully created."});
+        res.status(200).json({message: 'Profile has been successfully created.'});
 	} catch(err){
         res.status(err.statusCode).json({ message: err.message });
     }
@@ -24,7 +24,6 @@ const findExact = async (req, res) => {
 
         res.status(followerInfo.status).json({...userProfile, ...followerInfo.data, posts: posts.data});
 	} catch(err){
-	    console.log(err);
         if(axios.isAxiosError(err))
             res.status(err.response.status).json(err.response.data);
         else
@@ -33,10 +32,10 @@ const findExact = async (req, res) => {
 }
 
 const findAlike = async (req, res) => {
-    const { user, limit, ord }  = req.query;
+    const { user, page, size }  = req.query;
 
     try{
-		const profiles = await profile.findAlike(user, limit, ord);
+		const profiles = await profile.findAlike(user, page, size);
 
         res.status(200).json(profiles);
 	} catch(err){
@@ -56,11 +55,11 @@ const update = async (req, res) => {
     }
 }
 
-const fetchDisplayNames = async (req, res) => {
+const fetchProfileData = async (req, res) => {
     const { authors }  = req.body;
 
     try{
-		const displayNames = await profile.fetchDisplayNames(authors);
+		const displayNames = await profile.fetchProfileData(authors);
 
         res.status(200).json(displayNames);
 	} catch(err){
@@ -68,13 +67,13 @@ const fetchDisplayNames = async (req, res) => {
     }
 }
 
-const verifyProfile = async (req, res) => {
+const verify = async (req, res) => {
     const { username }  = req.params;
 
     try{
-		await profile.verifyProfile(username);
+		await profile.verify(username);
 
-        res.status(200).json('verified profile');
+        res.status(200).json('Profile has been successfully verified.');
 	} catch(err){
         res.status(err.statusCode).json({ message: err.message });
     }
@@ -85,6 +84,6 @@ module.exports = {
     findExact,
     findAlike,
     update,
-    fetchDisplayNames,
-    verifyProfile
+    fetchProfileData,
+    verify
 }
