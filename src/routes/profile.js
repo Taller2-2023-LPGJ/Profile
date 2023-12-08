@@ -6,15 +6,15 @@ const {
     findExact,
     findAlike,
     update,
-    fetchDisplayNames,
-    verifyProfile
+    fetchProfileData,
+    verify
 } = require('../controllers/profile');
 
 router.post('/', create);
 router.get('/:user', findExact);
 router.get('/', findAlike);
 router.put('/', update);
-router.post('/displayNames', fetchDisplayNames);
-router.put('/verifyProfile/:username', verifyProfile);
+router.post('/profileData', fetchProfileData);
+router.put('/verifyProfile/:username', verify);
 
 module.exports = router;

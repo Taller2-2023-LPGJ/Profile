@@ -1,9 +1,9 @@
-const profileDB = require('../database/profile');
+const database = require('../database/profile');
 const Exception = require('./exception');
 
 async function create(username){
 	try{
-		await profileDB.create(username);
+		await database.create(username);
 	} catch(err){
 		throw err;
 	}
@@ -11,7 +11,7 @@ async function create(username){
 
 async function findExact(username){
 	try{
-		const profile = await profileDB.findExact(username);
+		const profile = await database.findExact(username);
 
 		if(!profile){
 			throw new Exception('Account not found.', 404);
@@ -23,58 +23,61 @@ async function findExact(username){
 	}
 }
 
-async function findAlike(username, limit, order){
+async function findAlike(username, page, size){
 	try{
-		return await profileDB.findAlike(username ?? '', limit ?? 8, order ?? 'ASC');
+		return await database.findAlike(username ?? '', isNaN(+page) ? 0 : +page, isNaN(+size) ? 10 : +size);
 	} catch(err){
 		throw err;
 	}
 }
 
 async function update(username, updatedData){
-	if(updatedData.dateOfBirth){
-		try{
-			updatedData.dateOfBirth = new Date(updatedData.dateOfBirth);
-		} catch(err){
-			throw new Exception('Invalid date', 422);
-		}
+	if(updatedData.dateOfBirth && updatedData.dateOfBirth !== ''){
+		updatedData.dateOfBirth = new Date(updatedData.dateOfBirth);
+
+		if(isNaN(updatedData.dateOfBirth))
+			throw new Exception('Invalid date.', 422);
 	}
 
 	if(updatedData.displayName.length > 50)
 		throw new Exception('Display name must be 50 characters or less.', 422);
-	if(updatedData.displayName.location > 50)
+	if(updatedData.location.length > 50)
 		throw new Exception('Location must be 50 characters or less.', 422);
-	if(updatedData.displayName.biography > 180)
-		throw new Exception('Biography must be 50 characters or less.', 422);
+	if(updatedData.biography.length > 180)
+		throw new Exception('Biography must be 180 characters or less.', 422);
 
 	try{
-		await profileDB.update(username, updatedData);
+		await database.update(username, updatedData);
 	} catch(err){
 		throw err;
 	}
 }
 
-async function fetchDisplayNames(authors){
+async function fetchProfileData(authors){
 	try{
-		const users = await profileDB.fetchDisplayNames(authors);
+		const users = await database.fetchProfileData(authors);
 
-		const usernameToDisplayName = {};
+		const usernameToDisplayData = {};
 
 		users.forEach((user) => {
-			usernameToDisplayName[user.username] = user.displayName;
+			let userData = {};
+
+			userData.displayName = user.displayName;
+			userData.picture = user.profilePicture;
+			userData.verified = user.verified;
+
+			usernameToDisplayData[user.username] = userData;
 		});
 
-		return usernameToDisplayName;
+		return usernameToDisplayData;
 	} catch(err){
 		throw err;
 	}
 }
 
-async function verifyProfile(username){
+async function verify(username){
 	try{
-		var profile = await profileDB.getProfile(username);
-		profile.verified = true;
-		await profileDB.update(username, profile);
+		await database.verify(username);
 	} catch(err){
 		throw err;
 	}
@@ -85,6 +88,6 @@ module.exports = {
 	findExact,
 	findAlike,
 	update,
-	fetchDisplayNames,
-	verifyProfile
+	fetchProfileData,
+	verify
 };

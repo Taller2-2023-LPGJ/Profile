@@ -20,9 +20,8 @@ const findExact = async (req, res) => {
     try{
 		const userProfile = await profile.findExact(user ?? '');
         const followerInfo = await axios.get(process.env.CONTENT_URL + 'follow/' + user + '?username=' + username);
-        const posts = await axios.get(process.env.CONTENT_URL + 'post/', {params: {...req.query, author: user}});
 
-        res.status(followerInfo.status).json({...userProfile, ...followerInfo.data, posts: posts.data});
+        res.status(followerInfo.status).json({...userProfile, ...followerInfo.data});
 	} catch(err){
         if(axios.isAxiosError(err))
             res.status(err.response.status).json(err.response.data);
