@@ -25,7 +25,7 @@ jobs:
       uses: okteto/apply@latest
       with:
         namespace: snap-msg-auth-profile-julianquino
-        compose: docker-compose.yaml
+        manifest: docker-compose.yaml
 
     - name: "Push changes"
       uses: okteto/push@latest
