@@ -19,7 +19,7 @@ jobs:
     - name: "Activate Namespace"
       uses: okteto/namespace@latest
       with:
-        name: snap-msg-auth-profile-julianquino
+        namespace: snap-msg-auth-profile-julianquino
     
     - name: "Deploy application"
       uses: okteto/apply@latest
