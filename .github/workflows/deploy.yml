@@ -1,0 +1,22 @@
+# File: .github/workflows/workflow.yml
+on:
+  push:
+    branches:
+      - develop
+
+name: Deploy
+
+jobs:
+
+  devflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to Okteto
+        uses: okteto/deploy@v1
+        with:
+          stack-file: docker-compose.yml
+        env:
+          OKTETO_API_TOKEN: ${{ secrets.OKTETO_TOKEN }}
