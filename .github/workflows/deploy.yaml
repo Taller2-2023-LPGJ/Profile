@@ -17,6 +17,6 @@ jobs:
       - name: Deploy to Okteto
         uses: okteto/deploy@v1
         with:
-          stack-file: docker-compose.yml
+          stack-file: docker-compose.yaml
         env:
           OKTETO_API_TOKEN: ${{ secrets.OKTETO_TOKEN }}
