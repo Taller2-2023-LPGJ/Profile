@@ -11,12 +11,24 @@ jobs:
   devflow:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    
+    - uses: okteto/context@latest
+      with:
+        token: ${{ secrets.OKTETO_TOKEN }}
+    
+    - name: "Activate Namespace"
+      uses: okteto/namespace@latest
+      with:
+        name: snap-msg-auth-profile-julianquino
+    
+    - name: "Deploy application"
+      uses: okteto/apply@latest
+      with:
+        namespace: snap-msg-auth-profile-julianquino
+        compose: docker-compose.yaml
 
-      - name: Deploy to Okteto
-        uses: okteto/deploy@v1
-        with:
-          stack-file: docker-compose.yaml
-        env:
-          OKTETO_API_TOKEN: ${{ secrets.OKTETO_TOKEN }}
+    - name: "Push changes"
+      uses: okteto/push@latest
+      with:
+        namespace: snap-msg-auth-profile-julianquino
+        #name: hello-world
