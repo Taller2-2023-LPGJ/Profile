@@ -1,13 +1,10 @@
 name: Profile
 
 dev:
-  api:
+  t2-profile:
     command: ["bash"]
     forward:
       - 3001:3001
-    sync:
-      - api:/usr/src/app
-  t2-profile:
     sync:
       - t2-profile:/usr/src/app
   
