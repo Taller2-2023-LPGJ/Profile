@@ -3,6 +3,10 @@ dev:
     forward:
       - 3001:3001
 
+  t2-profile-prisma:
+    forward:
+      - 5053:5053
+
 deploy:
   compose:
     file: docker-compose.yaml
