@@ -1,13 +1,15 @@
 name: Profile
 
-build:
+dev:
+  api:
+    command: ["bash"]
+    forward:
+      - 3001:3001
+    sync:
+      - api:/usr/src/app
   t2-profile:
-    context: .
-    dockerfile: Dockerfile
-
-  t2-profile-prisma:
-    context: .
-    dockerfile: Dockerfile
+    sync:
+      - t2-profile:/usr/src/app
   
 deploy:
   compose:
