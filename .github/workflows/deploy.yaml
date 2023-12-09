@@ -16,10 +16,5 @@ jobs:
       with:
         token: ${{ secrets.OKTETO_TOKEN }}
     
-    - name: "Activate Namespace"
-      uses: okteto/namespace@latest
-      with:
-        namespace: snap-msg-auth-profile-julianquino
-
-    - name: Deploy to Okteto
-        run: docker-compose up -d
+    - name: "Build"
+      uses: okteto/build@latest
