@@ -2,15 +2,19 @@ build:
   t2-profile:
     context: .
     dockerfile: Dockerfile
-
+    
   t2-profile-prisma:
     context: .
     dockerfile: Dockerfile
 
   t2-profile-db:
     context: .
-    image: postgres:latest
+    dockerfile: dockerfiles/Dockerfile.db
+
+  t2-profile-pgadmin:
+    context: .
+    dockerfile: dockerfiles/Dockerfile.pgadmin
 
 deploy:
   compose:
-    - file: docker-compose.yaml
+    file: docker-compose.yaml
