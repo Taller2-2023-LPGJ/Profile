@@ -48,7 +48,7 @@ const update = async (req, res) => {
     try{
 		await profile.update(username, {displayName, location, biography, dateOfBirth, profilePicture});
 
-        res.status(200).json({message: "Profile has been successfully updated."});
+        res.status(200).json({message: 'Profile has been successfully updated.'});
 	} catch(err){
         res.status(err.statusCode).json({ message: err.message });
     }
