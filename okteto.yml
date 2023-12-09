@@ -1,0 +1,12 @@
+build:
+  t2-profile:
+    context: .
+    dockerfile: Dockerfile
+
+  t2-profile-prisma:
+    context: .
+    dockerfile: Dockerfile
+
+deploy:
+  compose:
+    - file: docker-compose.yaml
