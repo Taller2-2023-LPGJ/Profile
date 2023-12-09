@@ -2,11 +2,28 @@ name: Profile
 
 dev:
   t2-profile:
-    command: ["bash"]
     forward:
       - 3001:3001
     sync:
       - t2-profile:/usr/src/app
+
+  t2-profile-db:
+    forward:
+      - 5433:5433
+    sync:
+      - t2-profile-db:/usr/src/app
+
+  t2-profile-pgadmin:
+    forward:
+      - 5052:80
+    sync:
+      - t2-profile-pgadmin:/usr/src/app
+
+  t2-profile-prisma:
+    forward:
+      - 5053:5053
+    sync:
+      - t2-profile-prisma:/usr/src/app
   
 deploy:
   compose:
