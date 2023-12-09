@@ -23,9 +23,3 @@ jobs:
 
     - name: Deploy to Okteto
         run: docker-compose up -d
-
-    #- name: "Push changes"
-     # uses: okteto/deploy@latest
-      #with:
-       # namespace: snap-msg-auth-profile-julianquino
-        #name: hello-world
