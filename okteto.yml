@@ -1,19 +1,7 @@
-build:
+dev:
   t2-profile:
-    context: .
-    dockerfile: Dockerfile
-    
-  t2-profile-prisma:
-    context: .
-    dockerfile: Dockerfile
-
-  t2-profile-db:
-    context: .
-    dockerfile: dockerfiles/Dockerfile.db
-
-  t2-profile-pgadmin:
-    context: .
-    dockerfile: dockerfiles/Dockerfile.pgadmin
+    forward:
+      - 3001:3001
 
 deploy:
   compose:
