@@ -1,2 +1,3 @@
 deploy:
-  compose: docker-compose.yaml
+  compose:
+    - file: docker-compose.yaml
