@@ -1,4 +1,4 @@
-# File: .github/workflows/deploy.yml
+# File: .github/workflows/deploy.yaml
 on:
   push:
     branches:
@@ -11,11 +11,19 @@ jobs:
   devflow:
     runs-on: ubuntu-latest
     steps:
+
+    - uses: actions/checkout@v2
     
     - uses: okteto/context@latest
       with:
-        url: https://cloud.okteto.com/spaces/snap-msg-auth-profile-julianquino
         token: ${{ secrets.OKTETO_TOKEN }}
     
-    - name: "Build"
-      uses: okteto/build@latest
+    - name: "Activate Namespace"
+      uses: okteto/namespace@latest
+      with:
+        namespace: snap-msg-auth-profile-julianquino
+
+    - name: "Push changes"
+      uses: okteto/push@latest
+      with:
+        namespace: snap-msg-auth-profile-julianquino
