@@ -15,8 +15,10 @@ services:
 
   # Servicio para PostgreSQL
   t2-profile-db:
-    image: postgres:latest
-    container_name: profile-db
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.db
+    container_name: t2-profile-db
     environment:
       POSTGRES_DB: profile
       POSTGRES_USER: admin
@@ -30,7 +32,9 @@ services:
 
   # Servicio para PgAdmin
   t2-profile-pgadmin:
-    image: dpage/pgadmin4:latest
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile.pgadmin
     container_name: t2-profile-pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@gmail.com
