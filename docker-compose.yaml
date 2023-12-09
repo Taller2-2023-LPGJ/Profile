@@ -48,7 +48,6 @@ services:
     stdin_open: true
     build:
       context: .
-      dockerfile: Dockerfile
     container_name: t2-profile-prisma
     depends_on:
       - t2-profile-db
