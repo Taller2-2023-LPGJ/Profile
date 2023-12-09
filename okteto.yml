@@ -7,6 +7,10 @@ build:
     context: .
     dockerfile: Dockerfile
 
+  t2-profile-db:
+    context: .
+    image: postgres:latest
+
 deploy:
   compose:
     - file: docker-compose.yaml
