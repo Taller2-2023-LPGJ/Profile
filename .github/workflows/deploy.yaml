@@ -23,7 +23,7 @@ jobs:
       with:
         namespace: snap-msg-auth-profile-julianquino
 
-    - name: "Push changes"
-      uses: okteto/push@latest
+    - name: "Create stack"
+      uses: okteto/deploy-stack@latest
       with:
-        namespace: snap-msg-auth-profile-julianquino
+        build: "true"
