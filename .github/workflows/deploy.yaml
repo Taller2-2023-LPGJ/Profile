@@ -14,22 +14,10 @@ jobs:
     
     - uses: okteto/context@latest
       with:
+        url: https://cloud.okteto.com/spaces/snap-msg-auth-profile-julianquino
         token: ${{ secrets.OKTETO_TOKEN }}
     
-    - name: "Activate Namespace"
-      uses: okteto/namespace@latest
+    - name: "Build"
+      uses: okteto/build@latest
       with:
-        namespace: snap-msg-auth-profile-julianquino
-    
-    - name: "Deploy application"
-      uses: okteto/apply@latest
-      with:
-        namespace: snap-msg-auth-profile-julianquino
-        manifest: docker-compose.yaml
-        path: ./
-
-    - name: "Push changes"
-      uses: okteto/push@latest
-      with:
-        namespace: snap-msg-auth-profile-julianquino
-        #name: hello-world
+        file: Dockerfile
