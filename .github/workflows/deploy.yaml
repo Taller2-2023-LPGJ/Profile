@@ -1,4 +1,4 @@
-# File: .github/workflows/workflow.yml
+# File: .github/workflows/deploy.yaml
 on:
   push:
     branches:
@@ -7,16 +7,40 @@ on:
 name: Deploy
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18.17.1
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run Tests
+      run: npm test
 
   devflow:
     runs-on: ubuntu-latest
+    needs: test
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+    
+    - uses: okteto/context@latest
+      with:
+        token: ${{ secrets.OKTETO_TOKEN }}
+    
+    - name: "Activate Namespace"
+      uses: okteto/namespace@latest
+      with:
+        namespace: snap-msg-auth-profile-julianquino
 
-      - name: Deploy to Okteto
-        uses: okteto/deploy@v1
-        with:
-          stack-file: docker-compose.yaml
-        env:
-          OKTETO_API_TOKEN: ${{ secrets.OKTETO_TOKEN }}
+    - name: "Create stack"
+      uses: okteto/deploy-stack@latest
+      with:
+        build: "true"
+        file: docker-compose.yaml
